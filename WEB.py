@@ -3,9 +3,11 @@ import selenium
 import time
 
 ## Input driver location
-def google():
-
+def new_page():
+    ### chrome driver location
     location = "/home/kt/kt/chromedriver"
+
+    ### default web url
     url = "https://www.google.com"
 
     global page = webdriver.Chrome(location)
@@ -18,19 +20,32 @@ def new_google_tab():
     page.execute_script('window.open(url);')
 
 def search():
-
+    
+    ### keyword want to search
     key_word = "문경 날씨"
 
     inputElement = page.find_element_by_name("q")
     inputElement.sendkeys(key_word)
     inputElement.submit()
 
-def getMKdata():
+## read table
+def read_data():
+    
+    search()
 
     data = page.find_element_by_class_name("nawv0d")
-    data = data.text
-
+    
     return data
+
+def get_temp():
+    data = read_data()
+    temp = page.find_element_by_class_name("wob_t").text
+    print("=======================================")
+    print("temp : " + temp)
+    print("=======================================")
+
+    return temp
+
 
 def get_url():
 
