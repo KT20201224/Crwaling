@@ -5,32 +5,25 @@
 
     2022-07-19
 """
-
+from influxdb import InfluxDBClient
 from datetime import datetime, timedelta
 import time
+import requests
 
 def get_ifdb(db, host='localhost', port=8086, user='root', passwd='root'):
     # Create an object include information for connect to the influxDB
     client = InfluxDBClient(host, port, user, passwd, db)
-
+    
     try:
         # Try to Create database
         client.create_database(db)
 
         # If you can create databasse or have a database
         # there is no problem connecting to the ifnluxDB
-        count = 3
-        print("connecting")
-        for i in count:
-            print("...", end='')
-            time.sleep(1)
-
-        print('\n')
-
-        print('Connected')
-        print('==================================================')
-        print('connection info')
-        print('==================================================')
+        print('Connection Successful')
+        print('===========================')
+        print('      connection info')
+        print('===========================')
         print('host : ', host)
         print('port : ', port)
         print('username : ', user)
@@ -43,6 +36,40 @@ def get_ifdb(db, host='localhost', port=8086, user='root', passwd='root'):
 
     return client
 
+
+
+# def get_ifdb(db, host='localhost', port=8086, user='root', passwd='root'):
+#     # Create an object include information for connect to the influxDB
+#     client = InfluxDBClient(host, port, user, passwd, db)
+
+#     try:
+#         # Try to Create database
+#         client.create_database(db)
+
+#         # If you can create databasse or have a database
+#         # there is no problem connecting to the ifnluxDB
+        
+
+
+#         print('\n')
+
+#         print('Connected')
+#         print('==================================================')
+#         print('connection info')
+#         print('==================================================')
+#         print('host : ', host)
+#         print('port : ', port)
+#         print('username : ', user)
+#         print('database : ', db)
+    
+#     except:
+#         # Generate error if you can't create database (can't connect to ifdb)
+#         print('Connection Failed')
+#         pass
+
+#     return client
+
+"""
     def input(ifdb):
     json_body=[]
     tablename='mytable'
@@ -107,3 +134,4 @@ def get_ifdb(db, host='localhost', port=8086, user='root', passwd='root'):
 
     result=ifdb.query('select*from %s' %tablename)
     pprint(result.raw)
+"""
