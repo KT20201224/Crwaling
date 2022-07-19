@@ -1,5 +1,6 @@
-import M_Selenium.py
+import WEB
 
 if __name__ == '__main__':
-    new_page()
+    WEB.run()
+    
     
