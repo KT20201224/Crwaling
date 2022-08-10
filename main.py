@@ -1,4 +1,3 @@
-import WEB
 import influx_db
 import time
 import schedule
@@ -12,7 +11,7 @@ from pprint import pprint
 def run():
     mydb = influx_db.get_ifdb(db='kt')
 
-    schedule.every(1).hours.do(input_db,mydb)
+    schedule.every(10).minutes.do(input_db,mydb)
 
     while True:
         schedule.run_pending()
@@ -49,10 +48,11 @@ def input_db(mydb):
     point={
         "measurement":tablename,
         "tags":{
-            "location":location,
-            "crwal_time":date
+            "Region":"Korea"
         },
         "fields":{
+            "location":location,
+            "crwal_time":date,
             "temp":int(temp),
             "rain_prob":int(rain_pro),
             "humid":int(hum),
