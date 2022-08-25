@@ -1,86 +1,52 @@
-import influx_db
-import time
-import schedule
+import database
+
+import module
+from switch import switch
+from user import user
+from database import database
+from crawl import crawl
 import os
-import web_crwaling
-from datetime import datetime, timedelta
-import time
-from copy import deepcopy
-from pprint import pprint
 
-def run():
-    mydb = influx_db.get_ifdb(db='kt')
 
-    schedule.every(10).minutes.do(input_db,mydb)
+def clear():
+    os.system('clear')
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+if __name__=='__main__':
+
+    user = user()
+    switch = switch()
     
-
-def input_db(mydb):
-    page = web_crwaling.search()
-
-    temp = web_crwaling.read_temp(page)
-    rain_pro = web_crwaling.read_rainPro(page)[:-1]
-    hum = web_crwaling.read_hum(page)[:-1]
-    wind = web_crwaling.read_wind(page)[:-3]
-    location = web_crwaling.read_location(page)
-    date = web_crwaling.read_time(page)
-    png = web_crwaling.read_png(page)
-
-    print()
-    print('===========================')
-    print('           data')
-    print('===========================')
-    print("temp : ", temp, "°C")
-    print("rainPro : ", rain_pro, "%")
-    print("hum : ", hum, "%")
-    print("wind : ", wind, "m/s")
-    print("location : ", location)
-    print("time : ", date)
-    print("png : ", png)
-    print('===========================')
-
-    json_body=[]
-    tablename="weather"
-
-    point={
-        "measurement":tablename,
-        "tags":{
-            "Region":"Korea"
-        },
-        "fields":{
-            "location":location,
-            "crwal_time":date,
-            "temp":int(temp),
-            "rain_prob":int(rain_pro),
-            "humid":int(hum),
-            "wind":int(wind),
-            "URL":png
-
-        },
-        "time":None,
-    }
-
-    dt=datetime.now()-timedelta(hours=9)
-
-    np=deepcopy(point)
-    np['time']=dt
-    json_body.append(np)
-
-    mydb.write_points(json_body)
-
-    print()
-    print('===========================')
-    print("   data input success!!")
-    print('===========================')
-
-    web_crwaling.close()
-
-
-
-if __name__ == '__main__':
     
-    run()
+    while(True):
 
+        name = input('please Input your name : ')
+        user.change_usr_name(name)
+
+        region = input('region you want to search : ')
+        user.change_region(region)
+        clear()
+    
+        print('=================================')
+        print('Hello ' + user.usr_name + "!!")
+        print('you are finding ' + user.region + ' weather')
+        print('=================================')
+        
+        while(True):
+            check = input('Type ( y / n ) : ')
+
+            if(check == "y" or check == 'yes' or check == 'Y' or check == 'Yes' or check == 'YES'):
+                switch.on()
+                break
+            elif(check == 'n' or check == 'no' or check == 'N' or check == 'No' or check == 'NO'):
+                switch.off()
+                break
+
+        if(switch.check()):
+            clear()
+            break    
+
+    db = database()
+    clear()
+    
+    cr = crawl()
+    cr.search()

@@ -28,7 +28,7 @@ class crawl:
 
         self.page = driver.find_element_by_class_name("srp")
 
-        if(!page):
+        if(not page):
             print("Error : Page not parsed")
         else:
             print("Success : page parsed")
